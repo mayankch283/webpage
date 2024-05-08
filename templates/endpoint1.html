@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hotels</title>
+  </head>
+  <body>
+    <h1>Hotels</h1>
+    <form action="/endpoint2" method="post">
+      <label for="hotel">Choose a hotel:</label>
+      <select name="hotel" id="hotel">
+        {% for hotel in hotels %}
+          <option value="{{ hotel.id }}">{{ hotel.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

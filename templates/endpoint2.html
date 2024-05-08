@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Customer Orders</title>
+  </head>
+  <body>
+    <h1>Customer Orders</h1>
+    {% if orders %}
+      <ul>
+        {% for order in orders %}
+          <li>{{ order.customer_name }} - {{ order.room_type }} ({{ order.check_in_date }} - {{ order.check_out_date }})</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No orders found.</p>
+    {% endif %}
+    <a href="/">Back to Hotels</a>
+  </body>
+</html>
