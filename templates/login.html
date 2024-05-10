@@ -1,23 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Login</h1>
-    <form action="/login" method="post">
+    <form id="loginForm">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required><br>
+        <input type="text" id="username" name="username" required>
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br>
-        <label for="category">Category:</label>
-        <select name="category" id="category" required>
+        <input type="password" id="password" name="password" required>
+        <label for="user_type">User Type:</label>
+        <select id="user_type" name="user_type">
             <option value="user">User</option>
-            <option value="hotel_manager">Hotel Manager</option>
-        </select><br>
+            <option value="manager">Restaurant Manager</option>
+        </select>
         <button type="submit">Login</button>
     </form>
+    <a href="{{ url_for('register') }}">Register</a>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const user_type = document.getElementById('user_type').value;
+
+    const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `username=${username}&password=${password}&user_type=${user_type}`
+    });
+
+    const data = await response.json();
+    if (data.status === 'error') {
+        alert(data.message);
+    } else {
+        window.location.href = data.redirect_url;
+    }
+});
+    </script>
 </body>
 </html>
