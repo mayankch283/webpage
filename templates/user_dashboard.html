@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>User Dashboard</h1>
+        <h2>Place Order</h2>
+        <form id="placeOrderForm">
+            <div class="form-group">
+                <label for="restaurant">Restaurant:</label>
+                <select id="restaurant" name="restaurant_id">
+                    {% for manager in managers %}
+                    <option value="{{ manager[0] }}">{{ manager[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="items">Items:</label>
+                <textarea id="items" name="items"></textarea>
+            </div>
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
+
+    <script>
+        // ... (existing JavaScript code)
+    </script>
+</body>
+</html>

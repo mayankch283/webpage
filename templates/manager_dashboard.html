@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Manager Dashboard</h1>
+        <h2>Orders</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>User ID</th>
+                    <th>Restaurant ID</th>
+                    <th>Items</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order[0] }}</td>
+                    <td>{{ order[1] }}</td>
+                    <td>{{ order[2] }}</td>
+                    <td>{{ order[3] }}</td>
+                    <td>{{ order[4] }}</td>
+                    <td>
+                        <form class="update-status-form">
+                            <input type="hidden" name="order_id" value="{{ order[0] }}">
+                            <select name="status">
+                                <option value="Pending" {% if order[4] == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Ready by [time]" {% if order[4].startswith('Ready by') %}selected{% endif %}>Ready by [time]</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const updateStatusForms = document.querySelectorAll('.update-status-form');
+        updateStatusForms.forEach(form => {
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const order_id = form.querySelector('input[name="order_id"]').value;
+                const status = form.querySelector('select[name="status"]').value;
+
+                const response = await fetch('/update_order_status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `order_id=${order_id}&status=${encodeURIComponent(status)}`
+                });
+
+                const data = await response.text();
+                alert(data);
+            });
+        });
+    </script>
+</body>
+</html>
